@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="cs">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link href="css/style.css" rel="stylesheet">
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw==" crossorigin="anonymous">
+   </head>
+   <body>
+      <div class="container">
+         <div id="app" v-show="!orderedMeal">
+            <div class="meal" v-for="meal in meals" v-if="current === $index">
+               <div class="row">
+                  <div class="col-xs-12">
+                     <h3>{{$index+1}} / {{meals.length}}</h3>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-xs-12">
+                     <h1>{{meal.name}} <small>{{meal.cook}}</small></h1>
+                     <h4>Hodnocení ostatními: <strong>{{meal.rating}}</strong>/10</h4>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-xs-6">
+                     <img width="100%" src="{{meal.imgUrl}}" />
+                  </div>
+                  <div class="col-xs-6">
+                     <h3>Cena a vzdálenost</h3>
+                     <table class="table">
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <strong>{{meal.price}} Kč</strong> 
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>
+                                 <strong>{{meal.distance}} kilometrů od Vás</strong> 
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                     <h3>Složení</h3>
+                     <span v-for="ing in meal.ingredients">
+                        {{ing}}<br />
+                     </span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div id="sumUp" v-show="orderedMeal">
+            <h1>Objednali jste si {{meals[current].name}}</h1>
+            <div v-if="selectedDelivery == buttons['deliveryService']">
+               <h2><small>Jídlo vám bude doručeno okolo</small> {{meals[current].time}} <small>k Vám domů</small></h2>
+            </div>
+            <div v-if="selectedDelivery == buttons['personalPickup']">
+               <h2><small>Jídlo si můžete osobně vyzvednout v</small> {{meals[current].time}} <small> na adrese</small></h2>
+              <table class="table">
+                  <tr>
+                     <td>
+                        <strong>{{meals[current].cook}}</strong>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        {{meals[current].street}}
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        {{meals[current].city}}
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        {{meals[current].distance}} kilometrů daleko
+                     </td>
+                  </tr>
+              </table>
+            </div>
+         </div>
+
+      </div>
+
+
+
+      <div class="modal fade" id="order" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Vyvzednete si jídlo osobně?</h4>
+            </div>
+            <div class="modal-body">
+              <h4>Adresa:</h4>
+              <table class="table">
+                  <tr>
+                     <td>
+                        <strong>{{meals[current].cook}}</strong>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        {{meals[current].street}}
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        {{meals[current].city}}
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        {{meals[current].distance}} kilometrů daleko
+                     </td>
+                  </tr>
+              </table>
+              <button v-bind:class="['btn', selectedDelivery == buttons['personalPickup'] ? 'btn-success' : 'btn-default', 'btn-lg']">
+                  Jídlo si vyzvednu osobně
+               </button>
+               <button v-bind:class="['btn', selectedDelivery == buttons['deliveryService'] ? 'btn-success' : 'btn-default', 'btn-lg']">
+                  Jídlo chci dovést ke mě domů
+               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>    
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A==" crossorigin="anonymous"></script>
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.14/vue.min.js"></script>
+      <script src="./js/app.js"></script>
+   </body>
+</html>
